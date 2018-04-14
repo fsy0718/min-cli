@@ -486,7 +486,7 @@ export function resolveDep (requestOptions: Request.Options): Request.Core {
     isPublish,
     isThreeNpm = false
   } = requestOptions
-
+  let isAbsoluteWhiteName = false
   if (!request && !parent) {
     throw new Error('依赖分析错误，request 和 parent 不能同时为空')
   }
@@ -496,7 +496,13 @@ export function resolveDep (requestOptions: Request.Options): Request.Core {
       parent = path.dirname(request)
       request = `./${path.basename(request)}`
     } else {
-      throw new Error(`依赖分析错误，非入口文件 request 不能为绝对路径`)
+      let host = url.parse(request, false, true).host || ''
+      if (config.absoluteDepWhiteNames.indexOf(host) > -1) {
+        isAbsoluteWhiteName = true
+      }
+      else {
+        throw new Error(`依赖分析错误，非入口文件 request 不能为绝对路径`)
+      }
     }
   }
 
@@ -553,6 +559,8 @@ export function resolveDep (requestOptions: Request.Options): Request.Core {
     dest,
     destRelative,
 
-    isThreeNpm: $isThreeNpm
+    isThreeNpm: $isThreeNpm,
+
+    isAbsoluteWhiteName
   }
 }

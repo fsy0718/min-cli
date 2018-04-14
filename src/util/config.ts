@@ -14,6 +14,7 @@ type GetPathType = 'file' | 'src' | 'dest' | 'pages' | 'packages' | 'cache.file'
  * 自定义配置白名单成员
  */
 const CUSTOM_CONFIG_MEMBER: string[] = [
+  'absoluteDepWhiteNames', //绝对路径白名单
   'style',
   'compilers', // 编译器
   'src', // 源代码的路径

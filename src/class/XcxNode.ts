@@ -92,10 +92,10 @@ export class XcxNode {
    *
    * @static
    * @param {XcxNode.Options} options
-   * @returns {(XcxNode | null)}
+   * @returns {(XcxNode | number)}
    * @memberof XcxNode
    */
-  static create (options: XcxNode.Options): XcxNode | null {
+  static create (options: XcxNode.Options): XcxNode | number {
     let { isMain, isForce, root } = options
 
     if (isMain && root) {
@@ -108,7 +108,7 @@ export class XcxNode {
       if (isMain) {
         log.error(`找不到入口：${request.request}`)
       }
-      return null
+      return request.isAbsoluteWhiteName ? 1 : 0
     }
 
     let xcxNode = xcxNodeCache.get(request.src)
@@ -161,7 +161,7 @@ export class XcxNode {
         isThreeNpm: this.request.isThreeNpm
       })
 
-      if (xcxNode) {
+      if (typeof xcxNode !== 'number') {
         // 添加可用的请求
         this.useRequests.push({
           request,
@@ -171,11 +171,12 @@ export class XcxNode {
           ext: xcxNode.request.ext,
           dest: xcxNode.request.dest,
           destRelative: xcxNode.request.destRelative,
-          isThreeNpm: xcxNode.request.isThreeNpm
+          isThreeNpm: xcxNode.request.isThreeNpm,
+          isAbsoluteWhiteName: xcxNode.request.isAbsoluteWhiteName
         })
       } else {
         // 增加缺失的请求
-        this.lackRequests.push({
+        xcxNode === 0 && this.lackRequests.push({
           request,
           requestType
         })

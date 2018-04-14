@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:fsy0718/min-cli.git"
+    "url": "github.com/fsy0718/min-cli"
   },
   "scripts": {
     "build": "rm -rf ./lib/* && ./node_modules/.bin/tsc",

@@ -227,7 +227,7 @@ export function buildNpmWXCs (pkgNames: string[]) {
       isMain: true,
       parent: config.cwd
     })
-    if (xcxNode !== null) {
+    if (typeof xcxNode !== 'number') {
       xcxNodes.push(xcxNode)
     }
   })

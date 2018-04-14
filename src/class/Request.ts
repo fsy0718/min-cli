@@ -140,6 +140,13 @@ export namespace Request {
      * @memberof Core
      */
     isThreeNpm: boolean
+
+    /**
+     * 是否绝对路径白名单请求
+     * @type {boolean}
+     * @memberOf Core
+     */
+    isAbsoluteWhiteName: Boolean
   }
 
   /**
@@ -364,6 +371,7 @@ export class RequestCore implements Request.Core {
   ext: string
   dest: string
   destRelative: string
+  isAbsoluteWhiteName: Boolean
   /**
    * 是否来自第三方NPM
    *

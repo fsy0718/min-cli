@@ -14,6 +14,7 @@ export interface Config extends CustomConfig {
     dest: string // 编译路径
     default: 'index' // 默认文件
   }
+  absoluteDepWhiteNames: [string], //绝对路径白名单
   homePage: string // 默认首页
   layout: {
     placeholder: string // 模板页面站位符

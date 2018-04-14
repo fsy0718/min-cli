@@ -99,7 +99,7 @@ export class Xcx {
       } else {
         // 创建节点树
         let xcxNode = XcxNode.create(entry)
-        if (xcxNode) {
+        if (typeof xcxNode !== 'number') {
           xcxNodes.push(xcxNode)
         }
       }

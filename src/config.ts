@@ -18,6 +18,7 @@ const config: Config = {
     dest: '{{dest}}', // 编译路径
     default: 'index' // 默认文件
   },
+  absoluteDepWhiteNames: ['at.alicdn.com'],
   homePage: 'pages/home/index', // 默认首页
   layout: {
     placeholder: '<page></page>' // 模板页面站位符
