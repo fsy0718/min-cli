@@ -21,7 +21,7 @@ import { menus } from './config.json'
 export default {
   config: {
     usingComponents: {
-      'wxc-example-menu': '@minui/wxc-example-menu'
+      'wxc-example-menu': '@jfkued/wxc-example-menu'
     }
   },
   data: {

@@ -4,7 +4,7 @@ import * as _ from 'lodash'
 import { WxSFMScript, Request } from '../class'
 import { config, dom, log, LogType } from '../util'
 
-type StyleType = 'Less' | 'Pcss'
+type StyleType = 'Less' | 'Pcss' | 'Postcss'
 
 export namespace Global {
 
@@ -16,6 +16,7 @@ export namespace Global {
     config: StyleConfig
     lessCode: string
     pcssCode: string
+    postcssCode: string
   }
 
   export interface Config {
@@ -207,11 +208,13 @@ export class Global {
     let { style: styleConfig = {} } = configData
     let lessCode = this.generateStyleVariables(styleConfig, 'Less')
     let pcssCode = this.generateStyleVariables(styleConfig, 'Pcss')
+    let postcssCode = this.generateStyleVariables(styleConfig, 'Postcss')
     this.config = {
       style: {
         config: configData,
         lessCode,
-        pcssCode
+        pcssCode,
+        postcssCode
       }
     }
   }
@@ -234,6 +237,7 @@ export class Global {
         symbol = '@'
         break
       case 'Pcss':
+      case 'Postcss':
         symbol = '$'
         break
       default:

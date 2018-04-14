@@ -9,10 +9,10 @@
   "author": "<%= author %>",<% } %>
   "license": "MIT",
   "dependencies": {<% if (useExample) { %>
-    "@minui/wxc-example": "^1.0.0",
-    "@minui/wxc-example-demo": "^1.0.0",
-    "@minui/wxc-example-md": "^1.0.0",
-    "@minui/wxc-example-menu": "^1.0.0"<% } %>
+    "@jfkued/wxc-example": "^1.0.0",
+    "@jfkued/wxc-example-demo": "^1.0.0",
+    "@jfkued/wxc-example-md": "^1.0.0",
+    "@jfkued/wxc-example-menu": "^1.0.0"<% } %>
   },
   "devDependencies": {
     "babel-plugin-syntax-export-extensions": "^6.13.0",

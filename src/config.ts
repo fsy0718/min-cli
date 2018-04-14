@@ -1,6 +1,6 @@
 import { Config } from './declare'
 
-const scope = '@minui'
+const scope = '@jfkued'
 
 const config: Config = {
   title: 'MinUI',

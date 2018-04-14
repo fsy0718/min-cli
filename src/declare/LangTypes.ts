@@ -89,6 +89,10 @@ export const LangTypes: {
     requestType: RequestType.STYLE,
     compileType: CompileType.PCSS
   },
+  [ext.postcss]: {
+    requestType: RequestType.STYLE,
+    compileType: CompileType.PCSS
+  },
 
   // SFC
   [ext.wxa]: {

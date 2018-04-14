@@ -62,6 +62,7 @@ export interface Config extends CustomConfig {
     // 预编译
     less: string
     pcss: string
+    postcss: string
 
     // sass: '.sass'
     // stylus: '.stylus'

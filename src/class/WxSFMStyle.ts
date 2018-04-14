@@ -11,61 +11,48 @@ import { postcssUnit2rpx } from '../plugin'
 // const precss = require('precss')
 // import 插件有wxc工具提供
 // const postcssPartialImport = require('postcss-partial-import')
+const postcssAtRulesVariables = require('postcss-at-rules-variables')
 const postcssMixins = require('postcss-mixins')
-const postcssAdvancedVariables = require('postcss-advanced-variables')
-const postcssCustomMedia = require('postcss-custom-media')
 const postcssCustomProperties = require('postcss-custom-properties')
-const postcssMediaMinmax = require('postcss-media-minmax')
-const postcssColorFunction = require('postcss-color-function')
+const postcssEach = require('postcss-each')
+const postcssFor = require('postcss-for')
+const postcssConditionals = require('postcss-conditionals')
+const postcssNestedProps = require('postcss-nested-props')
 const postcssNesting = require('postcss-nesting')
 const postcssNested = require('postcss-nested')
-const postcssCustomSelectors = require('postcss-custom-selectors')
-const postcssAtroot = require('postcss-atroot')
-const postcssPropertyLookup = require('postcss-property-lookup')
+const postcssAtRoot = require('postcss-atroot')
 const postcssExtend = require('postcss-extend')
-const postcssSelectorMatches = require('postcss-selector-matches')
-const postcssSelectorNot = require('postcss-selector-not')
-/* precss-end */
-
-const postcssBem = require('postcss-bem')
+const postcssCssVariables = require('postcss-css-variables')
+const postcssColorFunction = require('postcss-color-function')
 const postcssCalc = require('postcss-calc')
-
-// bem 选项
-const postcssBemOptions = {
-  defaultNamespace: undefined,
-  style: 'suit',
-  separators: {
-    descendent: '__',
-    modifier: '--'
-  },
-  shortcuts: {
-    utility: 'u',
-    component: 'b',
-    descendent: 'e',
-    modifier: 'm',
-    when: 'is'
-  }
-}
+const autoprefixer = require('autoprefixer')
+/* precss-end */
 
 // postcss 处理器
 const processor = postcss([
-  postcssBem(postcssBemOptions),
+  postcssAtRulesVariables,
   postcssMixins,
-  postcssAdvancedVariables,
-  postcssCustomMedia,
-  postcssCustomProperties,
-  postcssMediaMinmax,
-  postcssColorFunction,
+  postcssEach({
+    plugins: {
+      afterEach: [postcssAtRulesVariables],
+      beforeEach: [postcssCustomProperties]
+    }
+  }),
+  postcssFor,
+  postcssConditionals,
+  postcssAtRulesVariables,
+  postcssNestedProps,
   postcssNesting,
   postcssNested,
-  postcssCustomSelectors,
-  postcssAtroot,
-  postcssPropertyLookup,
+  postcssAtRoot,
   postcssExtend,
-  postcssSelectorMatches,
-  postcssSelectorNot,
+  postcssCssVariables,
+  postcssColorFunction,
   postcssCalc,
-  postcssUnit2rpx
+  postcssUnit2rpx,
+  autoprefixer({
+    browsers: ['iOS 9', 'Android 4.4']
+  })
 ])
 
 export namespace WxSFMStyle {
