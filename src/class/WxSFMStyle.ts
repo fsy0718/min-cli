@@ -11,6 +11,7 @@ import { postcssUnit2rpx } from '../plugin'
 // const precss = require('precss')
 // import 插件有wxc工具提供
 // const postcssPartialImport = require('postcss-partial-import')
+const postcssImport = require('postcss-import')
 const postcssAtRulesVariables = require('postcss-at-rules-variables')
 const postcssMixins = require('postcss-mixins')
 const postcssCustomProperties = require('postcss-custom-properties')
@@ -30,6 +31,11 @@ const autoprefixer = require('autoprefixer')
 
 // postcss 处理器
 const processor = postcss([
+  postcssImport({
+    filter: (_url: string) => {
+      return path.extname(_url) === '.postcss'
+    }
+  }),
   postcssAtRulesVariables,
   postcssMixins,
   postcssEach({
@@ -292,6 +298,10 @@ export class WxSFMStyle extends WxSFM {
       root.walkAtRules((rule, index) => {
         if (rule.name !== 'import') {
           return
+        } else {
+          if (path.extname(rule.params) === '.postcss') {
+            return
+          }
         }
         // ① 收集所有的依赖，用于后续的依赖加载和路径更新
         this.depends.push({
@@ -300,7 +310,7 @@ export class WxSFMStyle extends WxSFM {
           $atRule: rule
         })
       })
-
+      
       // background background-image
       root.walkDecls((decl, index) => {
         // WXSS 里不用本地资源

@@ -272,6 +272,13 @@ export namespace Request {
     isPcss: boolean
 
     /**
+     * 是否.postcss扩展
+     *
+     * @type {boolean}
+     * @memberof Extend
+     */
+    isPostcss: boolean
+    /**
      * 是否.sass扩展
      *
      * @type {boolean}
@@ -320,7 +327,7 @@ export namespace Request {
     isScript: boolean
 
     /**
-     * 是否为样式文件类型，比如.css .wxss .less .pcss等
+     * 是否为样式文件类型，比如.css .wxss .less .pcss .postcss等
      *
      * @type {boolean}
      * @memberof Extend
@@ -428,6 +435,7 @@ export class RequestExtend extends RequestCore implements Request.Extend {
   isCss: boolean
   isLess: boolean
   isPcss: boolean
+  isPostcss: boolean
   isSass: boolean
   isStylus: boolean
 
@@ -478,7 +486,7 @@ export class RequestExtend extends RequestCore implements Request.Extend {
    * @memberof RequestExtend
    */
   get isStyle () {
-    return this.isCss || this.isWxss || this.isLess || this.isPcss || this.isSass || this.isStylus
+    return this.isCss || this.isWxss || this.isLess || this.isPcss || this.isSass || this.isStylus || this.isPostcss
   }
 
   /**

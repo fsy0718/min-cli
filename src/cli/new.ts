@@ -51,6 +51,15 @@ export namespace NewCommand {
      */
     newAfterContinueBuild?: boolean
 
+    /**
+     * 模块所属功能，比如属于布局
+     */
+    feature?: String
+
+    /**
+     *  模块功能名称
+     */
+    featureName?: String
     // /**
     //  * 基于组件，她具备插件的能力
     //  *
@@ -73,7 +82,6 @@ export class NewCommand {
 
   async run () {
     let { name = '', title, newType, newAfterContinueBuild } = this.options
-
     // 获取 answers
     let answers: NewAnswers = await getAnswers(this.options)
 
@@ -82,7 +90,9 @@ export class NewCommand {
       newType,
       pkgName: util.getRealPkgName(name),
       pageName: name,
-      title
+      title,
+      feature: 'default',
+      featureName: '默认'
     }
 
     answers = _.merge({}, defaults, answers)
@@ -298,25 +308,43 @@ export class NewCommand {
     if (answers.newType !== NewType.Package) {
       return
     }
-    let { pkgName = '', title = '' } = answers
+    let { pkgName = '', title = '', feature = '', featureName = '', mode, feature_mode } = answers
     let homeConfigPath = config.getPath('pages', 'home', 'config.json')
     if (!fs.existsSync(homeConfigPath)) {
       return
     }
 
     let homeConfigData = fs.readJsonSync(homeConfigPath)
-    let pages = _.get(homeConfigData, 'menus[0].pages')
+    if (mode === '0') {
+      feature = (feature_mode as FeatureMode).name
+      featureName = (feature_mode as FeatureMode).value
+    }
+    let pages = _.find(homeConfigData.menus, function (p) {
+      return p.id === feature && p.name === featureName
+    })
+    let pageName = util.getRealPageName(pkgName)
     if (_.isArray(pages)) {
-      let pageName = util.getRealPageName(pkgName)
       pages.unshift({
         id: pageName,
         name: title,
         icon: '',
         code: ''
       })
-
-      util.writeFile(homeConfigPath, JSON.stringify(homeConfigData, null, 2))
+    } else {
+      homeConfigData.menus.push({
+        id: feature,
+        name: featureName,
+        open: false,
+        icon: '',
+        pages: [{
+          id: pageName,
+          name: title,
+          icon: '',
+          code: ''
+        }]
+      })
     }
+    util.writeFile(homeConfigPath, JSON.stringify(homeConfigData, null, 2))
   }
 
   /**
@@ -353,6 +381,11 @@ export class NewCommand {
   }
 }
 
+interface FeatureMode extends Answers {
+  name: string,
+  value: string
+}
+
 /**
  * 交互式问答
  *
@@ -364,6 +397,9 @@ interface NewAnswers extends Answers {
   pkgName?: string
   pageName?: string
   title?: string
+  feature?: string
+  featureName?: string
+  feature_mode?: FeatureMode
 }
 
 /**
@@ -426,6 +462,15 @@ export default {
   }
 }
 
+function getFeature () {
+  let homeConfigPath = config.getPath('pages', 'home', 'config.json')
+  if (!fs.existsSync(homeConfigPath)) {
+    return []
+  }
+
+  return fs.readJsonSync(homeConfigPath).menus
+
+}
 /**
  * 获取命令行交互式问答
  *
@@ -534,6 +579,56 @@ function getAnswers (options: NewCommand.Options): Promise<NewAnswers> {
         let $newType = answers.newType || newType
         // for new page
         return ($newType === NewType.Page || projectType === ProjectType.Application) && !title
+      }
+    }, {
+      type: 'list',
+      message: '请选择添加功能模块的方式',
+      name: 'mode',
+      default: '0',
+      choices: () => {
+        return [{
+          name: '选择功能模块',
+          value: '0'
+        }, {
+          name: '新建功能模块',
+          value: '1'
+        }]
+      },
+      when (answers: any) {
+        return answers.newType === ProjectType.Component && !!name && !!title && !answers.feature
+      }
+    }, {
+      type: 'input',
+      message: '请输入新功能模块英文名称',
+      name: 'feature',
+      when (answers: any) {
+        return answers.newType === ProjectType.Component && !!name && !!title && answers.mode == '1' && !answers.feature
+      }
+    }, {
+      type: 'input',
+      message: '请输入新功能模块中文名称',
+      name: 'featureName',
+      when (answers: any) {
+        return answers.newType === ProjectType.Component && !!name && !!title && answers.mode == '1' && !!answers.feature && !answers.featureName
+      }
+    }, {
+      type: 'list',
+      message: '请选择功能模块',
+      name: 'feature_mode',
+      default: {
+        name: 'default',
+        value: '默认'
+      },
+      when (answers: any) {
+        return answers.newType === ProjectType.Component && !!name && !!title && answers.mode == '0'
+      },
+      choices: () => {
+        return getFeature().map((f:any) => {
+          return {
+            name: f.name,
+            value: f.id
+          }
+        })
       }
     }
   ]
