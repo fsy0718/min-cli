@@ -298,14 +298,14 @@ export class WxSFMStyle extends WxSFM {
       root.walkAtRules((rule, index) => {
         if (rule.name !== 'import') {
           return
-        } else {
-          if (path.extname(rule.params) === '.postcss') {
-            return
-          }
+        }
+        let requestParams = rule.params.replace(/^('|")(.*)('|")$/g, (match, quotn, filename) => filename)
+        if (path.extname(requestParams) === '.postcss') {
+          return
         }
         // ① 收集所有的依赖，用于后续的依赖加载和路径更新
         this.depends.push({
-          request: rule.params.replace(/^('|")(.*)('|")$/g, (match, quotn, filename) => filename),
+          request: requestParams,
           requestType: RequestType.STYLE,
           $atRule: rule
         })
