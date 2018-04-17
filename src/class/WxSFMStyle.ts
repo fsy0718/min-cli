@@ -191,7 +191,7 @@ export class WxSFMStyle extends WxSFM {
     source = Global.config.style.pcssCode + '\n' + source
 
     // postcss 编译（bem、precss集合插件中排除import插件、unit2rpx）
-    source = await processor.process(source).then(result => result.css)
+    source = await processor.process(source, {from: this.request.src}).then(result => result.css)
 
     return source
   }
