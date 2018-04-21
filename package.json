@@ -1,6 +1,6 @@
 {
   "name": "@jfkued/min-cli",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "小程序组件化开发环境，提供 cli 支持",
   "main": "lib/index.js",
   "repository": {
@@ -65,7 +65,7 @@
     "autoprefixer": "^8.2.0",
     "postcss-at-rules-variables": "^0.1.5",
     "postcss-atroot": "^0.1.3",
-    "postcss-calc": "^6.0.1",
+    "@jfkued/postcss-calc": "^6.0.1",
     "postcss-color-function": "^4.0.1",
     "postcss-conditionals": "^2.1.0",
     "postcss-css-variables": "^0.8.1",

@@ -25,7 +25,7 @@ const postcssAtRoot = require('postcss-atroot')
 const postcssExtend = require('postcss-extend')
 const postcssCssVariables = require('postcss-css-variables')
 const postcssColorFunction = require('postcss-color-function')
-const postcssCalc = require('postcss-calc')
+const postcssCalc = require('@jfkued/postcss-calc')
 const autoprefixer = require('autoprefixer')
 /* precss-end */
 
