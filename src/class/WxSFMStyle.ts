@@ -27,6 +27,7 @@ const postcssCssVariables = require('postcss-css-variables')
 const postcssColorFunction = require('postcss-color-function')
 const postcssCalc = require('@jfkued/postcss-calc')
 const autoprefixer = require('autoprefixer')
+const postcssCsso = require('postcss-csso')
 /* precss-end */
 
 // postcss 处理器
@@ -58,7 +59,8 @@ const processor = postcss([
   postcssUnit2rpx,
   autoprefixer({
     browsers: ['iOS 9', 'Android 4.4']
-  })
+  }),
+  postcssCsso
 ])
 
 export namespace WxSFMStyle {
